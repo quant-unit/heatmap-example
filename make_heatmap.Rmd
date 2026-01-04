@@ -143,7 +143,7 @@ df_by_var <- data.frame(expression_df) %>%
 Let's save these to our results folder as a TSV file.
 
 ```{r}
-readr::write_tsv(df_by_var, file.path(results_dir, "top_90_var_genes.tsv"))
+readr::write_tsv(df_by_var, file.path(results_dir, "top_75_var_genes.tsv"))
 ```
 
 ## Prepare metadata for annotation

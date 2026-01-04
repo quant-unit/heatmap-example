@@ -2,13 +2,11 @@
 title: "Acute Myeloid Leukemia Heatmap"
 author: "CCDL for ALSF - Adapted for this repository by Candace Savonen"
 date: "October 2021"
-output:
-  pdf_document:
-    toc: yes
+output:   
   html_notebook:
-    toc: yes
-    toc_float: yes
-    number_sections: yes
+    toc: true
+    toc_float: true
+    number_sections: true
 ---
 _This analysis has been adapted from this [refine.bio-examples notebook](https://alexslemonade.github.io/refinebio-examples/03-rnaseq/clustering_rnaseq_01_heatmap.html)_
 
@@ -48,7 +46,7 @@ if (!dir.exists(results_dir)) {
 
 ```{r}
 # Define the file path to the data directory
-data_dir <- file.path("data/SRP070849")
+data_dir <- file.path("data", "SRP070849")
 
 # Declare the file path to the gene expression matrix file
 data_file <- file.path(data_dir, "SRP070849.tsv")
@@ -65,12 +63,9 @@ metadata_file <- file.path(data_dir, "metadata_SRP070849.tsv")
 We will use `pheatmap` [@Slowikowski2017] for clustering and creating a heatmap.
 
 ```{r}
-packages <- c("dplyr", "pheatmap", "readr", "sessioninfo")
-
-for (package in packages) {
-  if (!(package %in% installed.packages())) {
-    install.packages(package, update = FALSE)
-  }
+if (!("pheatmap" %in% installed.packages())) {
+  # Install pheatmap
+  install.packages("pheatmap", update = FALSE)
 }
 ```
 
@@ -79,9 +74,6 @@ Attach the `pheatmap` and `magrittr` libraries:
 ```{r message=FALSE}
 # Attach the `pheatmap` library
 library(pheatmap)
-library(readr)
-library(dplyr)
-library(sessioninfo)
 
 # We will need this so we can use the pipe: %>%
 library(magrittr)

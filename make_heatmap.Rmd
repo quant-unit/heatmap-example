@@ -48,7 +48,7 @@ if (!dir.exists(results_dir)) {
 
 ```{r}
 # Define the file path to the data directory
-data_dir <- file.path("raw-data")
+data_dir <- file.path("data/SRP070849")
 
 # Declare the file path to the gene expression matrix file
 data_file <- file.path(data_dir, "SRP070849.tsv")
@@ -96,10 +96,10 @@ This chunk of code will read in both TSV files and add them as data frames to yo
 
 ```{r}
 # Read in metadata TSV file
-metadata <- readr::read_tsv(metadata_file)
+metadata <- readr::read_tsv(metadata_file, show_col_types = FALSE)
 
 # Read in data TSV file
-expression_df <- readr::read_tsv(data_file) %>%
+expression_df <- readr::read_tsv(data_file, show_col_types = FALSE) %>%
   # Here we are going to store the gene IDs as row names so that
   # we can have only numeric values to perform calculations on later
   tibble::column_to_rownames("Gene")

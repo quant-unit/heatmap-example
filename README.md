@@ -1,41 +1,79 @@
-# Acute Myeloid Leukemia (AML) Heatmap Analysis
+# Acute Myeloid Leukemia Heatmap Analysis
 
-This repository contains an R Markdown analysis that performs hierarchical clustering on RNA-seq data from AML mouse models. It visualizes gene expression patterns associated with `IDH2` and `TET2` mutations and their respective treatments.
+The overall goal of this analysis is to examine gene expression patterns in Acute Myeloid Leukemia (AML) mouse models. By filtering for the most variable genes and performing hierarchical clustering, we aim to visualize how samples group according to their specific mutations (`IDH2`, `TET2`) and treatments.
 
-**Original Study:** [Shih et al. (2017)](https://pubmed.ncbi.nlm.nih.gov/28193779/)
-**Data Source:** [refine.bio (SRP070849)](https://www.refine.bio/experiments/SRP070849)
+*This example analysis will:*
 
-## Workflow
+* Download pre-processed RNA-seq data from [refine.bio](https://www.refine.bio/).
+* Filter the dataset to retain only the genes with the highest variance across samples.
+* Perform hierarchical clustering on both genes and samples.
+* Generate an annotated heatmap to visualize expression differences relative to metadata (mutation and treatment).
 
-1. **Ingest:** Loads pre-processed, quantile-normalized RNA-seq data.
-2. **Filter:** Retains the upper quartile (top 25%) of genes based on variance.
-3. **Annotate:** Labels samples based on mutation status (`IDH2`, `TET2`, `WT`) and treatment (e.g., AG-221, 5-Azacytidine).
-4. **Visualize:** Generates a hierarchical clustering heatmap.
+## Requirements
 
-## Dependencies
+To run this analysis, you will need **R** and **Python** installed.
 
-This analysis requires **R** (>= 4.0 recommended) and the following packages:
+You will need the following R libraries:
 
-```r
-install.packages(c("dplyr", "pheatmap", "readr", "magrittr", "sessioninfo"))
+* `pheatmap`
+* `magrittr`
+* `readr`
+* `dplyr`
+* `tibble`
+* `rmarkdown` (to render the notebook)
+
+You will also need the `refinebio-py` package to run the download script:
+
+```bash
+pip install refinebio-py
 
 ```
 
-## Setup & Usage
+## How to run the analysis/Usage
 
-Ensure your data is located in `data/SRP070849/`.
+To re-run this analysis, here are the exact commands you need to run in your terminal, ensuring the top of this repository is your current working directory.
 
-To run the analysis:
+1. **Download the data**
+This script will download the SRP070849 dataset from refine.bio into a `data/` directory.
 
-1. Open the `.Rmd` file in RStudio.
-2. Click **Knit** (or run `rmarkdown::render("make_heatmap.Rmd")`).
+```bash
+python3 00-download-data.py
 
-## Outputs
+```
 
-Upon successful execution, the script generates the following:
+2. **Run the analysis notebook**
+This command renders the R Markdown notebook, running all code blocks to process the data and generate plots.
 
-| File | Location | Description |
-| --- | --- | --- |
-| **Heatmap** | `plots/aml_heatmap.png` | Clustering heatmap of high-variance genes. |
-| **Gene List** | `results/top_75_var_genes.tsv`* | TSV file containing the subset of genes used for the heatmap. |
-| **Report** | `*.html` or `*.pdf` | The rendered analysis notebook. |
+```bash
+Rscript -e "rmarkdown::render('make_heatmap.Rmd')"
+
+```
+
+## About the scripts
+
+* `00-download-data.py` - This Python script utilizes the refine.bio API to download the specific AML dataset (SRP070849) required for the analysis. It ensures the data is downloaded, unzipped, and ready in the `data/` folder.
+* `make_heatmap.Rmd` - This Rmd notebook takes the data that is downloaded from refine.bio, filters for high-variance genes, and creates a heatmap that is saved to `plots/aml_heatmap.png`.
+
+### Input
+
+The data used by this analysis is [SRP070849](https://www.refine.bio/experiments/SRP070849), which is downloaded [processed and quantile normalized](http://docs.refine.bio/en/latest/main_text.html#refine-bio-processed-refinebio-processedibadge) from refine.bio using the python script included in this repo.
+
+It contains RNA-seq data from 19 mice with Acute Myeloid Leukemia (AML) under controlled treatment conditions.
+
+### Output
+
+Two directories are created by this analysis to hold the output:
+
+`plots/` - contains the heatmap image:
+
+* `aml_heatmap.png`: A hierarchically clustered heatmap showing the expression of the most variable genes.
+* **Interpretation:** Yellow indicates high expression (up-regulation), blue indicates low expression (down-regulation), and black represents average expression. The side bars indicate the mutation status and treatment type for each sample.
+
+
+`results/` - contains the data file:
+
+* `top_75_var_genes.tsv`: A TSV file containing the subset of the gene expression matrix used to generate the heatmap (genes in the upper 75th percentile of variance).
+
+### Additional info
+
+This analysis is adapted from the [refine.bio-examples](https://alexslemonade.github.io/refinebio-examples/) repository.

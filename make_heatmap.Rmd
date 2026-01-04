@@ -2,11 +2,16 @@
 title: "Acute Myeloid Leukemia Heatmap"
 author: "CCDL for ALSF - Adapted for this repository by Candace Savonen"
 date: "October 2021"
-output:   
+output:
+  pdf_document:
+    toc: yes
   html_notebook:
-    toc: true
-    toc_float: true
-    number_sections: true
+    toc: yes
+    toc_float: yes
+    number_sections: yes
+  html_document:
+    toc: yes
+    df_print: paged
 ---
 _This analysis has been adapted from this [refine.bio-examples notebook](https://alexslemonade.github.io/refinebio-examples/03-rnaseq/clustering_rnaseq_01_heatmap.html)_
 
@@ -169,6 +174,21 @@ annotation_df <- metadata %>%
 ```
 
 ### Create annotated heatmap
+
+The following code generates the heatmap. To interpret the results, look for the following features in the resulting plot:
+
+**The Color Scale:** We are using a deepskyblue (low) to yellow (high) color scale. Because we set scale = "row", the colors represent the Z-score (standard deviation from the mean) for each gene.
+
+- Yellow: Indicates that the gene is expressed higher in that specific sample compared to the average of that gene across all samples.
+- Blue: Indicates that the gene is expressed lower than the average.
+- Black: Indicates expression near the average.
+
+**The Dendrograms (Trees):** The branching structures on the top and left sides represent hierarchical clustering.
+
+- Top Dendrogram (Columns/Samples): Samples that are connected by short branches are mathematically similar to each other. If the biological replicates (e.g., all IDH2 mutants) cluster together, it suggests the mutation drives a distinct gene expression profile.
+- Left Dendrogram (Rows/Genes): Genes that cluster together likely behave similarly and may be co-regulated or part of the same biological pathway.
+
+**The Annotation Tracks:** Look at the colored bars at the very top of the columns. These represent the mutation and refinebio_treatment metadata. Check if the "blocks" of yellow or blue gene expression patterns align vertically with specific mutations or treatments.
 
 ```{r}
 # Create and store the annotated heatmap object

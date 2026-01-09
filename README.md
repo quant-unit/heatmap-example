@@ -100,3 +100,5 @@ There are two main GitHub actions in this repository:
 
 Both GitHub actions have the option [to be run manually](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow).
 The Docker management GitHub actions also has the option to push the re-built Docker image to Dockerhub by setting `dockerhubpush` to `true`.
+
+## AND SO ON...

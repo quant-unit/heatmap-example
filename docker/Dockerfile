@@ -16,5 +16,12 @@ RUN Rscript -e  "install.packages( \
     c('renv', \
       'pheatmap'))"
 
+RUN Rscript -e  "install.packages( \
+    c('BiocManager', \
+      'R.utils', \
+      'gamlss'))"
+
 # Set final workdir for commands
 WORKDIR /home/rstudio
+
+CMD ["echo","Yay! I added to this Docker image"]

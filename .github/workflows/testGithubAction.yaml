@@ -1,10 +1,10 @@
-name: Manual Workflow
+name: Test Action
 
 on:
   workflow_dispatch:
-  
-  jobs:
+
+jobs:
   build:
-  runs-on: ubuntu-latest
-steps:
-  - run: echo "Triggered manually!"
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "It works!"
